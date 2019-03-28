@@ -1,2 +1,2 @@
 # nginx-kube-demo
-nginx plus kubernetes demo
+nginx plus kubernetes demo using ansible
