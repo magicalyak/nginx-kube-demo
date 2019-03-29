@@ -17,3 +17,8 @@ docker_rpms:
 - docker-selinux
 - docker-forward-journald
 - docker
+
+dockerhub_user: "magicalyak"
+dockerhub_password: "changeme"
+dockerhub_repo: nginx-plus
+dockerhub_tag: r17v1

@@ -1,3 +1,9 @@
+dockerhub_user: "magicalyak"
+dockerhub_password: "changeme"
+dockerhub_repo: nginx-plus
+dockerhub_tag: r17v1
+nginx_plus: true
+
 # This value determines how kubernetes binaries, config files, and service
 # files are loaded onto the target machines.  The following are the only
 # valid options:

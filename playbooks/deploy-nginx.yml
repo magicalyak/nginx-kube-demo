@@ -1,0 +1,10 @@
+---
+- name: Deploy nginx
+- hosts:
+    - masters
+    - nodes
+  become: yes
+  roles:
+    - nginx
+  tags:
+    - nginx
