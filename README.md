@@ -25,16 +25,16 @@ or create a new one for the cluster.
 Place the `inventory` file into the `./inventory` directory.
 
 For example:
-
 ```sh
 [masters]
-k8s-master.example.com
+kube-master-test.example.com
 
 [etcd:children]
 masters
 
 [nodes]
-k8s-[1:2].example.com
+kube-minion-test-[1:2].example.com
+```
 
 ### Configure Cluster options
 
