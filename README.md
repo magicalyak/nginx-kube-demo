@@ -92,3 +92,8 @@ Author Information
 ------------------
 
 Tom Gamull tom.gamull@nginx.com https://github.com/magicalyak
+
+Acknowledgements
+----------------
+
+Information from https://github.com/kubernetes/contrib/tree/master/ansible was used
