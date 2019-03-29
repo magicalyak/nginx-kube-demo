@@ -1,2 +1,3 @@
 ---
-# handlers file for nginx-kube-demo 
+- name: reload systemd
+  command: systemctl --system daemon-reload
