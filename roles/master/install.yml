@@ -1,0 +1,30 @@
+---
+- name: initialize kubeadmin
+  shell: kubectl init --pod-network-cidr={{ pod_network_cidr }} >> cluster_initialized.txt
+  args:
+    chdir: $HOME
+    creates: cluster_initialized.txt
+
+- name: create .kube directory
+  file:
+    path: $HOME/.kube
+    state: directory
+    mode: 0755
+
+- name: copy admin.conf to user's kube config
+  copy:
+    src: /etc/kubernetes/admin.conf
+    dest: $HOME/.kube/config
+    remote_src: yes
+
+- include: multus_flannel.yml
+  when: use_multus and network_overlay == "flannel"
+
+- include: flannel.yml
+  when: not use_multus and network_overlay == "flannel"
+
+- include: calico.yml
+  when: not use_multus and network_overlay == "calico"
+
+- name: let master run nodes
+  shell: kubectl taint nodes --all node-rule.kubernetes.io/master-

@@ -1,0 +1,5 @@
+---
+- name: "change selinux to permissive or disabled"
+  selinux:
+    policy: targeted
+    state: "{{ selinx-mode }}"

@@ -1,4 +1,4 @@
-Role Name
+NGINX-kube-demo
 =========
 
 Ansible playbook to install and configure NGINX Plus on Kubernetes for a demo.
@@ -18,21 +18,70 @@ you can add more nodes to the inventory, just extend the inventory group nodes
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+### Configure inventory
+
+Add the system information gathered above into a file called `inventory`,
+or create a new one for the cluster.
+Place the `inventory` file into the `./inventory` directory.
+
+For example:
+
+```sh
+[masters]
+k8s-master.example.com
+
+[etcd:children]
+masters
+
+[nodes]
+k8s-[1:2].example.com
+
+### Configure Cluster options
+
+Look through all of the options in `inventory/group_vars/all.yml` and
+set the variables to reflect your needs. The options are described there
+in full detail.
+
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+Ansible needs to be installed
 
-Example Playbook
-----------------
+Installation
+------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+## Running the playbook
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+After going through the setup, run the `deploy-cluster.sh` script from within the `scripts` directory:
+
+`$ cd scripts/ && ./deploy-cluster.sh`
+
+You may override the inventory file by running:
+
+`INVENTORY=myinventory ./deploy-cluster.sh`
+
+The directory containing ``myinventory`` file must contain the default ``inventory/group_vars`` directory as well (or its equivalent).
+Otherwise variables defined in ``group_vars/all.yml`` will not be set.
+
+In general this will work on very recent Fedora, rawhide or F21.  Future work to
+support RHEL7, CentOS, and possible other distros should be forthcoming.
+
+### Targeted runs
+
+You can just setup certain parts instead of doing it all.
+
+#### Etcd
+
+`$ ./deploy-cluster.sh --tags=etcd`
+
+#### Kubernetes master
+
+`$ ./deploy-cluster.sh --tags=masters`
+
+#### Kubernetes nodes
+
+`$ ./deploy-cluster.sh --tags=nodes`
 
 License
 -------
