@@ -1,0 +1,37 @@
+---
+- name: install ingress resources
+  shell: kubectl create -f $HOME/kubernetes-ingress/deployments/"{{ item }}"
+  with_items:
+    - common/ns-and-sa.yaml
+    - common/default-server-secreat.yaml
+    - common/nginx-config.yaml
+    - rbac/rbac.yaml
+  ignore_errors: true
+
+- name: change image pull policy for ingress controller
+  replace:
+    path: $HOME/kubernetes-ingress/deployments/daemon-set/nginx-plus-ingress.yaml
+    regexp: '        imagePullPolicy: Always'
+    replace: '        imagePullPolicy: IfNotPresent'
+
+- name: modify yaml for ingress controller repo
+  replace:
+    path: $HOME/kubernetes-ingress/deployments/daemon-set/nginx-plus-ingress.yaml
+    regexp: '      - image: nginx-plus-ingress:edge'
+    replace: '      - image: {{ dockerhub_user }}/{{ dockerhub_repo }}:{{ dockerhub_tag }}'
+
+- name: create new service for NGINX Plus dashboard
+  blockinfile:
+    path: $HOME/kubernetes-ingress/deployments/service/nodeport.yaml
+    insertbefore: "  selector:"
+    block: |
+        - port: 8080
+          targetPort: 8080
+          protocol: TCP
+          name: dashboard
+
+- name: create daemon-set and nodeport for ingress controller
+  shell: kubectl create -f $HOME/kubernetes-ingress/deployments/"{{ item }}"
+  with_items:
+    - daemon-set/nginx-plus-ingress.yaml
+    - service/nodeport.yaml

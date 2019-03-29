@@ -121,7 +121,3 @@
   notify:
     - start docker
 
-- name: docker login
-  docker_login:
-    username: "{{ dockerhub_user }}"
-    password: "{{ dockerhub_password }}"

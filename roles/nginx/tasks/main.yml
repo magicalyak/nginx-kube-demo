@@ -1,52 +1,22 @@
 ---
-- name: clone nginx repo
-  git:
-    repo: https://github.com/nginxinc/kubernetes-ingress
-    dest: $HOME/kubernetes-ingress
+- name: docker login
+  docker_login:
+    username: "{{ dockerhub_user }}"
+    password: "{{ dockerhub_password }}"
 
-- name: copy plus repo cert to repo # needs to be in files
-  copy:
-    src: nginx-repo.crt
-    dest: $HOME/kubernetes-ingress/nginx-repo.crt
+- name: install nginx-plus private repo
+  include: nginxrepo.yml
+  when: inventory_hostname in groups['masters']
 
-- name: copy plus repo key to repo # needs to be in files
-  copy:
-    src: nginx-repo.key
-    dest: $HOME/kubernetes-ingress/nginx-repo.key
+- name: pull image for nginx-plus
+  docker_image:
+    name: "{{ dockerhub_user }}/{{ dockerhub_repo }}"
+    tag: "{{ dockerhub_tag }}"
 
-- name: copy template for dashboard and nginx
-  copy:
-    src: nginx-plus.tmpl
-    dest: $HOME/kubernetes-ingress/internal/configs/templates/nginx-plus.tmpl
+- name: install nginx-plus on master
+  include: ingress.yml
+  when: inventory_hostname in groups['masters']
 
-#- name: remove allow line from dashboard
-#  replace:
-#    path: $HOME/kubernetes-ingress/internal/configs/templates/nginx-plus.tmpl
-#    regexp: 'allow {{$value}};{{end}}'
-#    replace: '#allow {{$value}};{{end}}'
-
-#- name: remove deny line from dashboard
-#  replace:
-#    path: $HOME/kubernetes-ingress/internal/configs/templates/nginx-plus.tmpl
-#    regexp: 'deny all;'
-#    replace: '#deny all;'
-
-- name: replace docker tag in Makefile
-  replace:
-    path: $HOME/kubernetes-ingress/Makefile
-    regexp: 'edge'
-    replace: "{{ dockerhub_tag }}"
-
-- name: run nginx-plus make clean
-  make:
-    chdir: $HOME/kubernetes-ingress
-    target: clean
-
-- name: run nginx-plus make
-  make:
-    chdir: $HOME/kubernetes-ingress
-    target: all
-    params:
-      DOCKERFILE: DockerfileForPlus
-      PREFIX: "{{ dockerhub_tag }}/nginx-plus"
-
+- name: install nginx-plus on master
+  include: cafe-example.yml
+  when: inventory_hostname in groups['masters']
