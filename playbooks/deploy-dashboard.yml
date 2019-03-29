@@ -1,0 +1,9 @@
+---
+- name: deploy nginx
+  hosts:
+    - kube-master
+  become: yes
+  roles: 
+    - dashboard
+  tags:
+    - dashboard 

@@ -1,8 +1,7 @@
 ---
 - name: Deploy nginx
 - hosts:
-    - masters
-    - nodes
+    - kube-cluster
   become: yes
   roles:
     - nginx

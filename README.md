@@ -6,6 +6,11 @@ Ansible playbook to install and configure NGINX Plus on Kubernetes for a demo.
 Requirements
 ------------
 
+### kubesrpay
+
+Use kubespray first and clone into a parallel directory.
+There is a sample hosts.ini or inventory file under inventory/group_vars
+
 This should be run against 3 existing CentOS 7 x64 machines already running as VMs from the host system. The instances should be have the following minimum specs.  Minimally, assign unique FQDN and network MAC/IP to the machines.  For Fusion on a Mac, you may want to use bridge mode or ensure the VMs can communicate with each other before starting.
 
 - k8s-master: 4GB memory and 2 vCPUs
@@ -26,62 +31,56 @@ Place the `inventory` file into the `./inventory` directory.
 
 For example:
 ```sh
-[masters]
+[kube-master]
 kube-master-test.example.com
 
 [etcd:children]
 masters
 
-[nodes]
+[kube-node]
 kube-minion-test-[1:2].example.com
+
+[k8s-cluster:children]
+kube-master
+kube-node
+
+[calico-rr]
 ```
 
 ### Configure Cluster options
 
 Look through all of the options in `inventory/group_vars/all.yml` and
 set the variables to reflect your needs. The options are described there
-in full detail.
+in full detail. You must enter the password in there
 
+Then copy your nginx-repo.crt and nginx-repo.key to the `roles/nginx/files/` directory
 
 Dependencies
 ------------
 
 Ansible needs to be installed
+kubespray needs to be run
 
 Installation
 ------------
 
 ## Running the playbook
 
-After going through the setup, run the `deploy-cluster.sh` script from within the `scripts` directory:
+For the dashboard, run the `deploy-dashboard.sh` script from within
+the `scripts` directory:
 
-`$ cd scripts/ && ./deploy-cluster.sh`
+`$ cd scripts/ && ./deploy-dashboard.sh`
+
+After going through the setup and entering in the all.yml, run the `deploy-nginx.sh` script from within the `scripts` directory:
+
+`$ cd scripts/ && ./deploy-nginx.sh`
 
 You may override the inventory file by running:
 
-`INVENTORY=myinventory ./deploy-cluster.sh`
+`INVENTORY=myinventory ./deploy-nginx.sh`
 
 The directory containing ``myinventory`` file must contain the default ``inventory/group_vars`` directory as well (or its equivalent).
 Otherwise variables defined in ``group_vars/all.yml`` will not be set.
-
-In general this will work on very recent Fedora, rawhide or F21.  Future work to
-support RHEL7, CentOS, and possible other distros should be forthcoming.
-
-### Targeted runs
-
-You can just setup certain parts instead of doing it all.
-
-#### Etcd
-
-`$ ./deploy-cluster.sh --tags=etcd`
-
-#### Kubernetes master
-
-`$ ./deploy-cluster.sh --tags=masters`
-
-#### Kubernetes nodes
-
-`$ ./deploy-cluster.sh --tags=nodes`
 
 License
 -------

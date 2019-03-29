@@ -1,7 +1,0 @@
----
-- name: install overlay network calico rbac
-  shell: kubectl apply -f kubectl apply -f https://docs.projectcalico.org/v3.3/getting-started/kubernetes/installation/hosted/rbac-kdd.yaml
-
-- name: install overlay network calico datastore
-  shell: kubectl apply -f https://docs.projectcalico.org/v3.3/getting-started/kubernetes/installation/hosted/kubernetes-datastore/calico-networking/1.7/calico.yaml
-

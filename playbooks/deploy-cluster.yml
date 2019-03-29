@@ -1,5 +1,0 @@
----
-# This playbook deploys nginx on top of a kubernetes cluster 
-# launch addons, like dns
-- include: deploy-nginx.yml
-
