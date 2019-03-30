@@ -6,3 +6,4 @@ inventory/inventory
 roles/nginx/files/nginx-repo.crt
 roles/nginx/files/nginx-repo.key
 notes.md
+*.retry

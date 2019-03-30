@@ -1,7 +1,7 @@
 ---
-- name: Deploy nginx
-- hosts:
-    - kube-cluster
+- name: deploy nginx
+  hosts:
+    - k8s-cluster
   become: yes
   roles:
     - nginx

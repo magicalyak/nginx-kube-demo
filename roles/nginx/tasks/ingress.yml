@@ -1,6 +1,6 @@
 ---
 - name: install ingress resources
-  shell: kubectl create -f $HOME/kubernetes-ingress/deployments/"{{ item }}"
+  shell: "/usr/local/bin/kubectl --kubeconfig /etc/kubernetes/admin.conf create -f $HOME/kubernetes-ingress/deployments/{{ item }}"
   with_items:
     - common/ns-and-sa.yaml
     - common/default-server-secreat.yaml
@@ -31,7 +31,7 @@
           name: dashboard
 
 - name: create daemon-set and nodeport for ingress controller
-  shell: kubectl create -f $HOME/kubernetes-ingress/deployments/"{{ item }}"
+  shell: "/usr/local/bin/kubectl --kubeconfig /etc/kubernetes/admin.conf create -f $HOME/kubernetes-ingress/deployments/{{ item }}"
   with_items:
     - daemon-set/nginx-plus-ingress.yaml
     - service/nodeport.yaml

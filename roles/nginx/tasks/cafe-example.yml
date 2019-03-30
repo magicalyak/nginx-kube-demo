@@ -39,7 +39,7 @@
 #
 - name: change cafe-example to include env demo variable
   file:
-    src: cafe.yaml
+    src: "{{ role_path }}/files/cafe.yaml"
     dest: $HOME/kubernetes-ingress/examples/complete-example/cafe.yaml
 
 - name: add env demo service to cafe ingress
@@ -53,7 +53,7 @@
                 servicePort: 80
 
 - name: deploy cafe example to kubernetes 
-  shell: kubectl create -f $HOME/kubernetes-ingress/examples/complete-example/"{{ item }}"
+  shell: "/usr/local/bin/kubectl --kubeconfig /etc/kubernetes/admin.conf create -f $HOME/kubernetes-ingress/examples/complete-example/{{ item }}"
   with_items:
     - cafe.yaml
     - cafe-secret.yaml

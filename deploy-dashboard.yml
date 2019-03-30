@@ -1,5 +1,5 @@
 ---
-- name: deploy nginx
+- name: deploy dashboard
   hosts:
     - kube-master
   become: yes

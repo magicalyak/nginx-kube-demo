@@ -1,4 +1,9 @@
 ---
+- name: install git
+  yum:
+    name: git
+    state: present
+
 - name: clone nginx repo
   git:
     repo: https://github.com/nginxinc/kubernetes-ingress
@@ -6,17 +11,17 @@
 
 - name: copy plus repo cert to repo # needs to be in files
   copy:
-    src: nginx-repo.crt
+    src: "{{ role_path }}/files/nginx-repo.crt"
     dest: $HOME/kubernetes-ingress/nginx-repo.crt
 
 - name: copy plus repo key to repo # needs to be in files
   copy:
-    src: nginx-repo.key
+    src: "{{ role_path }}/files/nginx-repo.key"
     dest: $HOME/kubernetes-ingress/nginx-repo.key
 
 - name: copy template for dashboard and nginx
   copy:
-    src: nginx-plus.tmpl
+    src: "{{ role_path }}/files/nginx-plus.tmpl"
     dest: $HOME/kubernetes-ingress/internal/configs/templates/nginx-plus.tmpl
 
 #- name: remove allow line from dashboard

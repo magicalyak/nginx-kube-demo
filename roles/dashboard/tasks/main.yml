@@ -1,27 +1,9 @@
 ---
-- name: create an admin-user
-  k8s:
-    state: present
-    definition:
-      apiVersion: v1
-      kind: ServiceAccount
-      metadata:
-        name: admin-user
-        namespace: kube-system
+- name: copy admin-user template to master
+  copy:
+    src: "{{ role_path }}/files/admin-user.yaml"
+    dest: /etc/kubernetes/admin-user.yaml
 
-- name: create a cluster role binding for the admin-user
-  k8s:
-    state: present
-    definition:
-      apiVersion: rbac.authorization.k8s.io/v1
-      kind: ClusterRoleBinding
-      metadata:
-        name: admin-user
-      roleRef:
-        apiGroup: rbac.authorization.k8s.io 
-        kind: ClusterRole
-        name: cluster-admin
-      subjects:
-      - kind: ServiceAccount
-        name: admin-user
-        namespace: kube-system
+- name: create admin-user and cluster role binding
+  command: "/usr/local/bin/kubectl --kubeconfig /etc/kubernetes/admin.conf create -f /etc/kubernetes/admin-user.yaml"
+  run_once: true
