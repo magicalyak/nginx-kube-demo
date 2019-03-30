@@ -6,10 +6,14 @@ Ansible playbook to install and configure NGINX Plus on Kubernetes for a demo.
 Requirements
 ------------
 
-### kubesrpay
+### kubespray
 
 Use kubespray first and clone into a parallel directory.
 There is a sample hosts.ini or inventory file under inventory/group_vars
+you want to use the generated vagrant inventory and place it in
+`inventory/inventory`
+
+You can also roll your own as below:
 
 This should be run against 3 existing CentOS 7 x64 machines already running as VMs from the host system. The instances should be have the following minimum specs.  Minimally, assign unique FQDN and network MAC/IP to the machines.  For Fusion on a Mac, you may want to use bridge mode or ensure the VMs can communicate with each other before starting.
 
@@ -36,7 +40,21 @@ kube_network_plugin: flannel
 kube_network_plugin_multus: true
 ```
 
+In addition you should make the local kubectl be enabled by modifying the following settings in k8s-clust.yml
+
+```
+kubectl_localhost: true
+kubeconfig_localhost: true
+```
+
+Also make the changes in vagrant if you use that.
+You need to create the directory and file `vagrant/config.rb` and add settings to it such as
+`$os = "centos"`
+
+
 #### ssh keys
+No need to do this if you're using Vagrant because I need to figure that out.  If you roll your own VMs then add the ssh keys.
+
 create a private ssh key if you don't have one yet
 for each node copy this and test
 ` $ ssh-copy-id root@k8s-master.gamull.com`
@@ -62,7 +80,7 @@ or create a new one for the cluster.
 Place the `inventory` file into the `./inventory` directory.
 
 For example:
-```sh
+```
 [kube-master]
 kube-master-test.example.com
 
