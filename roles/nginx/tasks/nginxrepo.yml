@@ -14,11 +14,17 @@
     name: go
     state: present
 
+- name: set GOPATH
+  command: export GOPATH="$HOME/go/"
+
+- name: install cri-tools
+  command: go get github.com/kubernetes-incubator/cri-tools/cmd/crictl
+
 - name: add go to user path
   lineinfile:
     path: /root/.bash_profile
     insertafter: EOF
-    line: "export PATH=$PATH:/usr/local/go/bin"
+    line: "export PATH=$PATH:$HOME/go/bin/"
 
 - name: source bash_profile
   shell: . /root/.bash_profile
