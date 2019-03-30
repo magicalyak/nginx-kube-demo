@@ -53,5 +53,4 @@
     target: all
     params:
       DOCKERFILE: DockerfileForPlus
-      PREFIX: "{{ dockerhub_tag }}/nginx-plus"
-
+      PREFIX: "{{ dockerhub_user }}/nginx-plus"
