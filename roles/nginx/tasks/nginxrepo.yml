@@ -15,7 +15,7 @@
     state: present
 
 - name: set GOPATH
-  command: export GOPATH="$HOME/go/"
+  command: GOPATH="$HOME/go/"
 
 - name: install cri-tools
   command: go get github.com/kubernetes-incubator/cri-tools/cmd/crictl
@@ -78,10 +78,10 @@
     chdir: $HOME/kubernetes-ingress
     target: clean
 
-- name: run nginx-plus make
-  make:
-    chdir: $HOME/kubernetes-ingress
-    target: all
-    params:
-      DOCKERFILE: DockerfileForPlus
-      PREFIX: "{{ dockerhub_user }}/nginx-plus"
+#- name: run nginx-plus make
+#  make:
+#    chdir: $HOME/kubernetes-ingress
+#    target: all
+#    params:
+#      DOCKERFILE: DockerfileForPlus
+#      PREFIX: "{{ dockerhub_user }}/nginx-plus"
