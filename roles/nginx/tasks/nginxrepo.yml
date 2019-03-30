@@ -1,9 +1,18 @@
 ---
-- name: download go
-  unarchive:
-    src: https://dl.google.com/go/go1.12.1.linux-amd64.tar.gz
-    dest: /usr/local
-    remote_src: yes
+#- name: download go
+#  unarchive:
+#    src: https://dl.google.com/go/go1.12.1.linux-amd64.tar.gz
+#    dest: /usr/local
+#    remote_src: yes
+- name: install epel
+  yum:
+    name: epel-release
+    state: present
+
+- name: install go
+  yum:
+    name: go
+    state: present
 
 - name: add go to user path
   lineinfile:
