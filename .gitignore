@@ -1,3 +1,8 @@
 myinventory
 *.swp
 *~
+inventory/group_vars/all.yml
+inventory/inventory
+roles/nginx/files/nginx-repo.crt
+roles/nginx/files/nginx-repo.key
+notes.md
