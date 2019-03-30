@@ -1,0 +1,5 @@
+dockerhub_user: "magicalyak"
+dockerhub_password: "password"
+dockerhub_repo: nginx-plus
+dockerhub_tag: r17v2
+nginx_plus: true
