@@ -1,7 +1,23 @@
 ---
+- name: download go
+  unarchive:
+    src: https://dl.google.com/go/go1.12.1.linux-amd64.tar.gz
+    dest: /usr/local
+    remote_src: yes
+
+- name: add go to user path
+  lineinfile:
+    path: /root/.bash_profile
+    insertafter: EOF
+    line: "export PATH=$PATH:/usr/local/go/bin"
+
+- name: source bash_profile
+  shell: . /root/.bash_profile
+
 - name: install git
   yum:
-    name: git
+    name: 
+      - git
     state: present
 
 - name: clone nginx repo
