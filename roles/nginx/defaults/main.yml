@@ -1,8 +1,0 @@
----
-# vars file for nginx-kube-demo
-dashboard_external: "true"
-dockerhub_user: "magicalyak"
-dockerhub_password: "69S-CEn-hd9-sSD"
-dockerhub_repo: nginx-plus
-dockerhub_tag: r17v2
-nginx_plus: true
