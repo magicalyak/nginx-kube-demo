@@ -67,6 +67,7 @@ repeat for all nodes
 #### running kubespray ansible
 
 Once this is done and the inventory is set go and run the following
+if you used vagrant this should have been down on the `vagrant up` command
 
 `ansible-playbook cluster.yml -i inventory/mycluster/hosts.ini --user root --become --become-user=root cluster.yml`
 
@@ -117,9 +118,9 @@ Installation
 ## Running the playbook
 ### dashboard
 
-For the dashboard, run the `deploy-dashboard.yml` playbook:
+For the dashboard, run the `deploy-dashboard.yml` playbook from the kubespray directory:
 
-`$ ansible-playbook deploy-dashboard.yml -i ../kubespray/inventory/sample/agrant_ansible_inventory --become --become-user=root`
+`$ ansible-playbook ../nginx-kube-demo/deploy-dashboard.yml -i inventory/sample/vagrant_ansible_inventory --become --become-user=root`
 
 You can access the page by running this command and copying the address given into the browser
 `$ kubectl cluster-info`
@@ -137,7 +138,7 @@ NB: this is a cluster-admin and should only be for demo/dev purposes
 
 After going through the setup and entering in the all.yml, run the `deploy-nginx.yml` playbook:
 
-`$ ansible-playbook deploy-nginx.yml -i ../kubespray/inventory/sample/agrant_ansible_inventory --become --become-user=root`
+`$ ansible-playbook ../nginx-kube-demo/deploy-nginx.yml -i inventory/sample/vagrant_ansible_inventory --become --become-user=root`
 
 The directory containing ``myinventory`` file must contain the default ``inventory/group_vars`` directory as well (or its equivalent).
 Otherwise variables defined in ``group_vars/all.yml`` will not be set.
