@@ -1,0 +1,51 @@
+---
+- name: Fetch /etc/os-release
+  raw: cat /etc/os-release
+  register: os_release
+  changed_when: false
+  # This command should always run, even in check mode
+  check_mode: false
+  environment: {}
+
+- name: install git on master - ubuntu or debian
+  apt:
+    name: git
+    state: present
+  when: '"Ubuntu" in os_release.stdout or "Debian" in os_release.stdout'
+
+- name: install git on master - coreos
+  tasks:
+    - name: download nginx - coreos
+      raw: wget https://github.com/nginxinc/kubernetes-ingress/archive/v1.4.5.tar.gz
+
+    - name:  create kubernetes-ingress directory - coreos
+      raw: mkdir kubernetes-ingress
+    
+    - name: unzip nginx - coreos
+      raw: tar -xvf v1.4.5.tar.gz -C kubernetes-ingress --strip-components=1
+
+  when: '"CoreOS" in os_release.stdout'
+
+- name: install git on master - fedora
+  dnf:
+    name: git
+    state: present
+  when: '"Fedora" in os_release.stdout'
+  
+- name: install git on master - centos
+  yum:
+    name: git
+    state: present
+  when: '"CentOS" in os_release.stdout or "Red Hat Enterprise Linux" in os_release.stdout'
+
+- name: install git on master - opensuse or clearlinux
+  package:
+    name: git
+    state: present
+  when: '"OpenSUSE" in os_release.stdout or "Clear Linux OS" in os_release.stdout'
+
+- name: clone nginx repo
+  git:
+    repo: https://github.com/nginxinc/kubernetes-ingress
+    dest: $HOME/kubernetes-ingress
+  ignore_errors: true
