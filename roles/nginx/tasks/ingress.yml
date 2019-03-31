@@ -21,15 +21,10 @@
     replace: '      - image: {{ dockerhub_user }}/{{ dockerhub_repo }}:{{ dockerhub_tag }}'
 
 - name: create new service for NGINX Plus dashboard
-  blockinfile:
-    path: $HOME/kubernetes-ingress/deployments/service/nodeport.yaml
-    insertbefore: "  selector:"
-    block: |
-          - port: 8080
-            targetPort: 8080
-            protocol: TCP
-            name: dashboard
-
+  copy:
+    src: "{{ role_path }}/files/nodeport.yaml"
+    dest: $HOME/kubernetes-ingress/deployments/service/nodeport.yaml
+    
 - name: create daemon-set and nodeport for ingress controller
   shell: "/usr/local/bin/kubectl --kubeconfig /etc/kubernetes/admin.conf create -f $HOME/kubernetes-ingress/deployments/{{ item }}"
   with_items:

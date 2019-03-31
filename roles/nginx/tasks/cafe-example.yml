@@ -1,56 +1,13 @@
 ---
-#- name: use pretty index.hml for cafe example
-#  replace:
-#    path: $HOME/kubernetes-ingress/examples/complete-example/cafe.yaml
-#    regexp: '        image: nginxdemos/hello:plain-text'
-#    replace: '        image: nginxdemos/hello:latest'
-#
-#- name: change image pull policy for cafe example coffee
-#  lineinfile:
-#    path: $HOME/kubernetes-ingress/examples/complete-example/cafe.yaml
-#    insertafter: '        image: nginxdemos/hello:latest'
-#    line: '        imagePullPolicy: IfNotPresent'
-#
-#- name: change image pull policy for cafe example tea
-#  lineinfile:
-#    path: $HOME/kubernetes-ingress/examples/complete-example/cafe.yaml
-#    insertafter: '        image: nginxdemos/hello:latest'
-#    line: '        imagePullPolicy: IfNotPresent'
-#
-#- name: add env demo service to cafe example
-#  blockinfile:
-#    insertafter: EOF
-#    path: $HOME/kubernetes-ingress/examples/complete-example/cafe.yaml
-#    block: |
-#      ---
-#      apiVersion: v1
-#      kind: Service
-#      metadata:
-#        name: demo-svc
-#        labels:
-#      spec:
-#        ports:
-#        - port: 80
-#          targetPort: 80
-#          protocol: TCP
-#          name: http
-#        selector:
-#          env: demo
-#
 - name: change cafe-example to include env demo variable
   file:
     src: "{{ role_path }}/files/cafe.yaml"
     dest: $HOME/kubernetes-ingress/examples/complete-example/cafe.yaml
 
 - name: add env demo service to cafe ingress
-  blockinfile:
-    insertafter: EOF
-    path: $HOME/kubernetes-ingress/examples/complete-example/cafe-ingress.yaml
-    block: |
-            - path: /
-              backend:
-                serviceName: demo-svc
-                servicePort: 80
+  file:
+    src: "{{ role_path }}/files/cafe-example.yaml"
+    dest: $HOME/kubernetes-ingress/examples/complete-example/cafe-ingress.yaml
 
 - name: deploy cafe example to kubernetes 
   shell: "/usr/local/bin/kubectl --kubeconfig /etc/kubernetes/admin.conf create -f $HOME/kubernetes-ingress/examples/complete-example/{{ item }}"

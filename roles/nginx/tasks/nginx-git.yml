@@ -13,17 +13,16 @@
     state: present
   when: '"Ubuntu" in os_release.stdout or "Debian" in os_release.stdout'
 
-- name: install git on master - coreos
-  tasks:
-    - name: download nginx - coreos
-      raw: wget https://github.com/nginxinc/kubernetes-ingress/archive/v1.4.5.tar.gz
+- name: download nginx - coreos
+  raw: wget https://github.com/nginxinc/kubernetes-ingress/archive/v1.4.5.tar.gz
+  when: '"CoreOS" in os_release.stdout'
 
-    - name:  create kubernetes-ingress directory - coreos
-      raw: mkdir kubernetes-ingress
+- name: create kubernetes-ingress directory - coreos
+  raw: mkdir kubernetes-ingress
+  when: '"CoreOS" in os_release.stdout'    
     
-    - name: unzip nginx - coreos
-      raw: tar -xvf v1.4.5.tar.gz -C kubernetes-ingress --strip-components=1
-
+- name: unzip nginx - coreos
+  raw: tar -xvf v1.4.5.tar.gz -C kubernetes-ingress --strip-components=1
   when: '"CoreOS" in os_release.stdout'
 
 - name: install git on master - fedora
