@@ -8,7 +8,7 @@
 
 - name: install nginx-plus private repo
   include: nginxrepo.yml
-  when: inventory_hostname in groups['kube-master'] and {{ nginx_build }}
+  when: inventory_hostname in groups['kube-master'] and nginx_build
 
 - name: pull image for nginx-plus
   command: "docker pull {{ dockerhub_user }}/{{ dockerhub_repo }}:{{ dockerhub_tag }}"
