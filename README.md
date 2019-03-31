@@ -1,10 +1,8 @@
-NGINX-kube-demo
-=========
+# NGINX-kube-demo
 
 Ansible playbook to install and configure NGINX Plus on Kubernetes for a demo.
 
-Requirements
-------------
+## Requirements
 
 ### kubespray
 
@@ -23,7 +21,7 @@ This should be run against 3 existing CentOS 7 x64 machines already running as V
 
 you can add more nodes to the inventory, just extend the inventory group nodes
 
-#### Change settings for kubespray
+### Change settings for kubespray
 
 Here are my recommendations to have this work
 edit the following
@@ -31,7 +29,7 @@ edit the following
 
 and change to
 
-```
+```YAML
 # Choose network plugin (cilium, calico, contiv, weave or flannel)
 # Can also be set to 'cloud', which lets the cloud provider setup appropriate routing
 kube_network_plugin: flannel
@@ -42,7 +40,7 @@ kube_network_plugin_multus: true
 
 In addition you should make the local kubectl be enabled by modifying the following settings in k8s-clust.yml
 
-```
+```YAML
 kubectl_localhost: true
 kubeconfig_localhost: true
 ```
@@ -51,16 +49,16 @@ Also make the changes in vagrant if you use that.
 You need to create the directory and file `vagrant/config.rb` and add settings to it such as
 `$os = "centos"`
 
-
 #### ssh keys
+
 No need to do this if you're using Vagrant because I need to figure that out.  If you roll your own VMs then add the ssh keys.
 
 create a private ssh key if you don't have one yet
 for each node copy this and test
-` $ ssh-copy-id root@k8s-master.gamull.com`
+`$ ssh-copy-id root@k8s-master.gamull.com`
 say yes for trust and enter the root password
 then test and ensure you can login without a password
-` $ ssh root@k8s-master.gamull.com`
+`$ ssh root@k8s-master.gamull.com`
 
 repeat for all nodes
 
@@ -71,8 +69,7 @@ if you used vagrant this should have been down on the `vagrant up` command
 
 `ansible-playbook cluster.yml -i inventory/mycluster/hosts.ini --user root --become --become-user=root cluster.yml`
 
-Role Variables
---------------
+## Role Variables
 
 ### Configure inventory
 
@@ -81,7 +78,8 @@ or create a new one for the cluster.
 Place the `inventory` file into the `./inventory` directory.
 
 For example:
-```
+
+```YAML
 [kube-master]
 kube-master-test.example.com
 
@@ -106,17 +104,16 @@ in full detail. You must enter the password in there
 
 Then copy your nginx-repo.crt and nginx-repo.key to the `roles/nginx/files/` directory
 
-Dependencies
-------------
+## Dependencies
 
 Ansible needs to be installed
 kubespray needs to be run
 
-Installation
-------------
+## Installation
 
-## Running the playbook
-### dashboard
+### Running the playbook
+
+#### dashboard
 
 For the dashboard, run the `deploy-dashboard.yml` playbook from the kubespray directory:
 
@@ -134,7 +131,7 @@ then open the dashboard and select token and enter it and you should be good
 
 NB: this is a cluster-admin and should only be for demo/dev purposes
 
-### nginx ingress controller
+#### nginx ingress controller
 
 After going through the setup and entering in the all.yml, run the `deploy-nginx.yml` playbook:
 
@@ -143,17 +140,14 @@ After going through the setup and entering in the all.yml, run the `deploy-nginx
 The directory containing ``myinventory`` file must contain the default ``inventory/group_vars`` directory as well (or its equivalent).
 Otherwise variables defined in ``group_vars/all.yml`` will not be set.
 
-License
--------
+## License
 
 Apache 2.0
 
-Author Information
-------------------
+## Author Information
 
-Tom Gamull tom.gamull@nginx.com https://github.com/magicalyak
+Tom Gamull tom.gamull@nginx.com <https://github.com/magicalyak>
 
-Acknowledgements
-----------------
+## Acknowledgements
 
-Information from https://github.com/kubernetes/contrib/tree/master/ansible was used
+Information from <https://github.com/kubernetes/contrib/tree/master/ansible> was used
