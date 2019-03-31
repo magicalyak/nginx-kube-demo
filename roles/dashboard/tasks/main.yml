@@ -10,8 +10,8 @@
 
 - name: display post install message
   debug:
-    msg:
-    - 'Things left to do:'
-    - '- run "kubectl cluster-info" and open dashboard URL'
-    - '- run kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep admin-user | awk '{print $1}')'
-    - '- copy token value and use that option for logging into the dashboard'
+    msg: |
+      - 'Things left to do:'
+      - '- run "kubectl cluster-info" and open dashboard URL'
+      - '- run kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep admin-user | awk '{print $1}')'
+      - '- copy token value and use that option for logging into the dashboard'
