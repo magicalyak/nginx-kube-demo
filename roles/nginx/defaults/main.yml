@@ -1,5 +1,11 @@
+# dockerhub username and password
 dockerhub_user: "magicalyak"
-dockerhub_password: "password"
+dockerhub_password: "secretpassword"
+# name of private repo and tag
 dockerhub_repo: nginx-plus
-dockerhub_tag: r17v2
+dockerhub_tag: r17v1
+# currently not used
 nginx_plus: true
+# true means we will build it on the master and 
+# false means to pull it from a premade docker hub image
+nginx_build: true

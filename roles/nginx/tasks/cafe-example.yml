@@ -47,7 +47,7 @@
     insertafter: EOF
     path: $HOME/kubernetes-ingress/examples/complete-example/cafe-ingress.yaml
     block: |
-            - path: /coffee
+            - path: /
               backend:
                 serviceName: demo-svc
                 servicePort: 80

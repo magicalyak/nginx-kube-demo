@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: coffee
-        image: nginxdemos/hello:plain-text
+        image: nginxdemos/hello:latest
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 80
@@ -50,7 +50,7 @@ spec:
     spec:
       containers:
       - name: tea 
-        image: nginxdemos/hello:plain-text
+        image: nginxdemos/hello:latest
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 80

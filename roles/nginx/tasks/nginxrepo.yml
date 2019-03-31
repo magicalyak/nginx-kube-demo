@@ -1,45 +1,4 @@
 ---
-#- name: download go
-#  unarchive:
-#    src: https://dl.google.com/go/go1.12.1.linux-amd64.tar.gz
-#    dest: /usr/local
-#    remote_src: yes
-- name: install epel
-  yum:
-    name: epel-release
-    state: present
-
-- name: install go
-  yum:
-    name: go
-    state: present
-
-- name: set GOPATH
-  command: GOPATH="$HOME/go/"
-
-- name: install cri-tools
-  command: go get github.com/kubernetes-incubator/cri-tools/cmd/crictl
-
-- name: add go to user path
-  lineinfile:
-    path: /root/.bash_profile
-    insertafter: EOF
-    line: "export PATH=$PATH:$HOME/go/bin/"
-
-- name: source bash_profile
-  shell: . /root/.bash_profile
-
-- name: install git
-  yum:
-    name: 
-      - git
-    state: present
-
-- name: clone nginx repo
-  git:
-    repo: https://github.com/nginxinc/kubernetes-ingress
-    dest: $HOME/kubernetes-ingress
-
 - name: copy plus repo cert to repo # needs to be in files
   copy:
     src: "{{ role_path }}/files/nginx-repo.crt"
@@ -55,18 +14,6 @@
     src: "{{ role_path }}/files/nginx-plus.tmpl"
     dest: $HOME/kubernetes-ingress/internal/configs/templates/nginx-plus.tmpl
 
-#- name: remove allow line from dashboard
-#  replace:
-#    path: $HOME/kubernetes-ingress/internal/configs/templates/nginx-plus.tmpl
-#    regexp: 'allow {{$value}};{{end}}'
-#    replace: '#allow {{$value}};{{end}}'
-
-#- name: remove deny line from dashboard
-#  replace:
-#    path: $HOME/kubernetes-ingress/internal/configs/templates/nginx-plus.tmpl
-#    regexp: 'deny all;'
-#    replace: '#deny all;'
-
 - name: replace docker tag in Makefile
   replace:
     path: $HOME/kubernetes-ingress/Makefile
@@ -78,10 +25,10 @@
     chdir: $HOME/kubernetes-ingress
     target: clean
 
-#- name: run nginx-plus make
-#  make:
-#    chdir: $HOME/kubernetes-ingress
-#    target: all
-#    params:
-#      DOCKERFILE: DockerfileForPlus
-#      PREFIX: "{{ dockerhub_user }}/nginx-plus"
+- name: run nginx-plus make
+  make:
+    chdir: $HOME/kubernetes-ingress
+    target: all
+    params:
+      DOCKERFILE: DockerfileForPlus
+      PREFIX: "{{ dockerhub_user }}/nginx-plus"

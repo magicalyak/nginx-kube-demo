@@ -8,3 +8,4 @@ roles/nginx/files/nginx-repo.key
 notes.md
 *.retry
 roles/nginx/defaults/main.yml
+roles/nginx/vars/main.yml

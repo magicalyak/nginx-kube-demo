@@ -3,7 +3,7 @@
   shell: "/usr/local/bin/kubectl --kubeconfig /etc/kubernetes/admin.conf create -f $HOME/kubernetes-ingress/deployments/{{ item }}"
   with_items:
     - common/ns-and-sa.yaml
-    - common/default-server-secreat.yaml
+    - common/default-server-secret.yaml
     - common/nginx-config.yaml
     - rbac/rbac.yaml
   ignore_errors: true
@@ -25,10 +25,10 @@
     path: $HOME/kubernetes-ingress/deployments/service/nodeport.yaml
     insertbefore: "  selector:"
     block: |
-        - port: 8080
-          targetPort: 8080
-          protocol: TCP
-          name: dashboard
+          - port: 8080
+            targetPort: 8080
+            protocol: TCP
+            name: dashboard
 
 - name: create daemon-set and nodeport for ingress controller
   shell: "/usr/local/bin/kubectl --kubeconfig /etc/kubernetes/admin.conf create -f $HOME/kubernetes-ingress/deployments/{{ item }}"

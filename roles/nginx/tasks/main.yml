@@ -1,10 +1,24 @@
 ---
 - name: docker login
   command: "docker login -u {{ dockerhub_user }} -p {{ dockerhub_password }}"
-  
+
+- name: install git on master
+  yum:
+    name: 
+      - git
+    state: present
+  when: inventory_hostname in groups['kube-master']
+
+- name: clone nginx repo
+  git:
+    repo: https://github.com/nginxinc/kubernetes-ingress
+    dest: $HOME/kubernetes-ingress
+  when: inventory_hostname in groups['kube-master']
+  ignore_errors: true
+
 - name: install nginx-plus private repo
   include: nginxrepo.yml
-  when: inventory_hostname in groups['kube-master']
+  when: inventory_hostname in groups['kube-master'] and {{ nginx_build }}
 
 - name: pull image for nginx-plus
   command: "docker pull {{ dockerhub_user }}/{{ dockerhub_repo }}:{{ dockerhub_tag }}"

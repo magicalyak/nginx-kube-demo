@@ -7,3 +7,11 @@
 - name: create admin-user and cluster role binding
   command: "/usr/local/bin/kubectl --kubeconfig /etc/kubernetes/admin.conf create -f /etc/kubernetes/admin-user.yaml"
   run_once: true
+
+- name: display post install message
+  debug:
+    msg:
+    - 'Things left to do:'
+    - '- run "kubectl cluster-info" and open dashboard URL'
+    - '- run kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep admin-user | awk '{print $1}')'
+    - '- copy token value and use that option for logging into the dashboard'

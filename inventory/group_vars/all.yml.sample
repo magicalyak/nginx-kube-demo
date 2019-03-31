@@ -1,5 +1,0 @@
-dockerhub_user: "nginx"
-dockerhub_password: "password"
-dockerhub_repo: nginx-plus
-dockerhub_tag: r17v1
-nginx_plus: true
