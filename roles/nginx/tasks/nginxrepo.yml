@@ -12,7 +12,7 @@
 - name: copy template for dashboard and nginx
   copy:
     src: "{{ role_path }}/files/nginx-plus.tmpl"
-    dest: $HOME/kubernetes-ingress/internal/configs/templates/nginx-plus.tmpl
+    dest: $HOME/kubernetes-ingress/internal/configs/version1/nginx-plus.tmpl
 
 - name: replace docker tag in Makefile
   replace:
