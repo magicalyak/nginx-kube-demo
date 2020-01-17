@@ -1,13 +1,13 @@
 ---
 - name: change cafe-example to include env demo variable
-  file:
+  copy:
     src: "{{ role_path }}/files/cafe.yaml"
-    path: $HOME/kubernetes-ingress/examples/complete-example/cafe.yaml
+    dest: $HOME/kubernetes-ingress/examples/complete-example/cafe.yaml
 
 - name: add env demo service to cafe ingress
-  file:
+  copy:
     src: "{{ role_path }}/files/cafe-example.yaml"
-    path: $HOME/kubernetes-ingress/examples/complete-example/cafe-ingress.yaml
+    dest: $HOME/kubernetes-ingress/examples/complete-example/cafe-ingress.yaml
 
 - name: deploy cafe example to kubernetes 
   shell: "/usr/local/bin/kubectl --kubeconfig /etc/kubernetes/admin.conf create -f $HOME/kubernetes-ingress/examples/complete-example/{{ item }}"
